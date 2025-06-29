@@ -1,0 +1,27 @@
+// You are given an array of integers nums and an integer target.
+// Return the number of non-empty subsequences of nums such that the sum of the minimum and maximum element on it is less or equal to target. Since the answer may be too large, return it modulo 10^9 + 7.
+
+class Solution {
+    public int numSubseq(int[] nums, int target) {
+        Arrays.sort(nums);
+        int count = 0, left = 0, right = nums.length-1;
+        int mod = 1_000_000_007;
+
+        int[] exponential2 = new int[nums.length];
+        exponential2[0] = 1;
+        for(int i=1; i<nums.length; i++){
+            exponential2[i] = (exponential2[i-1] * 2) % mod;
+        }
+        
+        while (left <= right) {
+            if (nums[left] + nums[right] <= target) {
+                count = (count + exponential2[right - left]) % mod;
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return count;
+    }
+}
